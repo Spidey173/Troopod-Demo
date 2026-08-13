@@ -4609,12 +4609,13 @@ footer {
   zoom: 100% !important;
 }
 
-/* Footer Container Width & Alignment */
+/* Footer Container Left Alignment */
 footer .wrap {
   width: 100% !important;
-  max-width: 1350px !important;
-  margin: 0 auto !important;
-  padding: 0 24px !important;
+  max-width: 1450px !important;
+  margin: 0 auto 0 2% !important;
+  padding-left: 20px !important;
+  padding-right: 40px !important;
 }
 
 .fgrid {
