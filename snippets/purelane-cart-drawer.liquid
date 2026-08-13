@@ -1,0 +1,83 @@
+{% comment %}
+  Purelane Glassmorphism Cart Drawer Snippet
+  Renders slide-over cart drawer with real Shopify items, quantity modifiers, subtotal, and checkout trigger.
+{% endcomment %}
+
+<div class="cart-overlay" id="purelaneCartOverlay" aria-hidden="true"></div>
+
+<aside class="cart-drawer glass-2" id="purelaneCartDrawer" role="dialog" aria-modal="true" aria-label="Shopping Cart">
+  <div class="cd-head">
+    <div class="cd-title">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="22" height="22">
+        <path d="M4 6h2l2.2 10.4a1.6 1.6 0 0 0 1.6 1.3h7.6a1.6 1.6 0 0 0 1.6-1.3L20.5 9H6.4"/>
+        <circle cx="10" cy="20.5" r="1.1"/>
+        <circle cx="17.5" cy="20.5" r="1.1"/>
+      </svg>
+      <h3>Your Cart</h3>
+      <span class="pill cd-count">{{ cart.item_count }} items</span>
+    </div>
+    <button type="button" class="cd-close" id="purelaneCartClose" aria-label="Close cart drawer">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" width="20" height="20">
+        <path d="M18 6 6 18M6 6l12 12"/>
+      </svg>
+    </button>
+  </div>
+
+  <div class="cd-body" id="purelaneCartBody">
+    {%- if cart.item_count == 0 -%}
+      <div class="cd-empty">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" width="56" height="56" style="opacity: 0.3; margin-bottom: 12px;">
+          <circle cx="12" cy="12" r="9"/>
+          <path d="M8 12h8"/>
+        </svg>
+        <h4>Your cart is currently empty</h4>
+        <p>Explore our plant-powered homecare range and build your box today.</p>
+        <a href="{{ routes.root_url }}#shop" class="btn btn-primary cd-close-trigger" style="margin-top: 16px;">
+          Shop Bestsellers
+        </a>
+      </div>
+    {%- else -%}
+      <div class="cd-items">
+        {%- for item in cart.items -%}
+          <div class="cd-item glass" data-key="{{ item.key }}">
+            <div class="cd-thumb">
+              {%- if item.image != blank -%}
+                <img src="{{ item.image | image_url: width: 140 }}" alt="{{ item.title | escape }}" width="60" height="60" loading="lazy">
+              {%- else -%}
+                {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+              {%- endif -%}
+            </div>
+            <div class="cd-info">
+              <h4>{{ item.product.title }}</h4>
+              {%- unless item.product.has_only_default_variant -%}
+                <span class="cd-var">{{ item.variant.title }}</span>
+              {%- endunless -%}
+              <div class="cd-pr">{{ item.final_line_price | money }}</div>
+              <div class="cd-qty-wrap">
+                <button type="button" class="cd-qty-btn cd-qty-minus" data-key="{{ item.key }}" data-qty="{{ item.quantity | minus: 1 }}" aria-label="Decrease quantity">-</button>
+                <span class="cd-qty-val">{{ item.quantity }}</span>
+                <button type="button" class="cd-qty-btn cd-qty-plus" data-key="{{ item.key }}" data-qty="{{ item.quantity | plus: 1 }}" aria-label="Increase quantity">+</button>
+                <button type="button" class="cd-remove" data-key="{{ item.key }}" aria-label="Remove item">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="14" height="14"><path d="M3 6h18m-2 0v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                </button>
+              </div>
+            </div>
+          </div>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+  </div>
+
+  <div class="cd-foot glass-2" id="purelaneCartFoot" {% if cart.item_count == 0 %}style="display:none;"{% endif %}>
+    <div class="cd-subtotal">
+      <span>Subtotal</span>
+      <strong id="purelaneCartSubtotal">{{ cart.total_price | money }}</strong>
+    </div>
+    <p class="cd-note">Free shipping across India &middot; Inclusive of all taxes</p>
+    <a href="/checkout" class="btn btn-primary btn-block">
+      Proceed to Checkout
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><path d="M5 12h13m-5-6 6 6-6 6"/></svg>
+    </a>
+    <a href="{{ routes.cart_url }}" class="cd-view-cart">View full cart page</a>
+  </div>
+</aside>

@@ -246,11 +246,122 @@
     frame();
   }
 
-  /* ---------- Shopify AJAX Cart Handler ---------- */
+  /* ---------- Shopify AJAX Cart & Glass Drawer Handler ---------- */
   function initCartHandler() {
     if (window._purelaneCartBound) return;
     window._purelaneCartBound = true;
 
+    var drawer = document.getElementById('purelaneCartDrawer');
+    var overlay = document.getElementById('purelaneCartOverlay');
+    var closeBtn = document.getElementById('purelaneCartClose');
+
+    function formatMoney(cents) {
+      if (typeof cents !== 'number') cents = parseInt(cents, 10) || 0;
+      var rupees = Math.floor(cents / 100);
+      return '₹' + rupees.toLocaleString('en-IN');
+    }
+
+    function openCart() {
+      if (drawer) drawer.classList.add('is-open');
+      if (overlay) overlay.classList.add('is-open');
+      refreshCart();
+    }
+
+    function closeCart() {
+      if (drawer) drawer.classList.remove('is-open');
+      if (overlay) overlay.classList.remove('is-open');
+    }
+
+    if (closeBtn) closeBtn.addEventListener('click', closeCart);
+    if (overlay) overlay.addEventListener('click', closeCart);
+
+    document.addEventListener('click', function (e) {
+      if (e.target.closest('.cd-close-trigger')) {
+        closeCart();
+      }
+    });
+
+    // Header Cart Icon Click Handler
+    document.addEventListener('click', function (e) {
+      var cartIconLink = e.target.closest('header .ico[aria-label*="Cart"], .navtools a[href*="cart"]');
+      if (cartIconLink) {
+        e.preventDefault();
+        openCart();
+      }
+    });
+
+    function refreshCart() {
+      fetch('/cart.js')
+        .then(function (r) { return r.json(); })
+        .then(function (cart) {
+          renderCartData(cart);
+        })
+        .catch(function (err) { console.error('Cart refresh error:', err); });
+    }
+
+    function renderCartData(cart) {
+      // Update count dots
+      var dots = document.querySelectorAll('.navtools .dot, header .dot, .cd-count');
+      dots.forEach(function (dot) {
+        if (dot.classList.contains('cd-count')) {
+          dot.textContent = cart.item_count + (cart.item_count === 1 ? ' item' : ' items');
+        } else {
+          dot.textContent = cart.item_count;
+        }
+      });
+
+      var body = document.getElementById('purelaneCartBody');
+      var foot = document.getElementById('purelaneCartFoot');
+      var subtotalEl = document.getElementById('purelaneCartSubtotal');
+
+      if (subtotalEl) {
+        subtotalEl.textContent = formatMoney(cart.total_price);
+      }
+
+      if (foot) {
+        foot.style.display = cart.item_count === 0 ? 'none' : 'flex';
+      }
+
+      if (!body) return;
+
+      if (cart.item_count === 0) {
+        body.innerHTML = '<div class="cd-empty">' +
+          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" width="56" height="56" style="opacity: 0.3; margin-bottom: 12px;"><circle cx="12" cy="12" r="9"/><path d="M8 12h8"/></svg>' +
+          '<h4>Your cart is currently empty</h4>' +
+          '<p>Explore our plant-powered homecare range and build your box today.</p>' +
+          '<a href="#shop" class="btn btn-primary cd-close-trigger" style="margin-top: 16px;">Shop Bestsellers</a>' +
+          '</div>';
+        return;
+      }
+
+      var html = '<div class="cd-items">';
+      cart.items.forEach(function (item) {
+        var imgHtml = item.image
+          ? '<img src="' + item.image + '" alt="' + (item.title || '') + '" width="60" height="60">'
+          : '<div style="width:100%;height:100%;display:grid;place-items:center;background:rgba(255,255,255,0.08);color:#fff;font-size:10px;">No image</div>';
+
+        html += '<div class="cd-item glass" data-key="' + item.key + '">' +
+          '<div class="cd-thumb">' + imgHtml + '</div>' +
+          '<div class="cd-info">' +
+            '<h4>' + item.product_title + '</h4>' +
+            (item.variant_title && item.variant_title !== 'Default Title' ? '<span class="cd-var">' + item.variant_title + '</span>' : '') +
+            '<div class="cd-pr">' + formatMoney(item.final_line_price) + '</div>' +
+            '<div class="cd-qty-wrap">' +
+              '<button type="button" class="cd-qty-btn cd-qty-minus" data-key="' + item.key + '" data-qty="' + (item.quantity - 1) + '" aria-label="Decrease quantity">-</button>' +
+              '<span class="cd-qty-val">' + item.quantity + '</span>' +
+              '<button type="button" class="cd-qty-btn cd-qty-plus" data-key="' + item.key + '" data-qty="' + (item.quantity + 1) + '" aria-label="Increase quantity">+</button>' +
+              '<button type="button" class="cd-remove" data-key="' + item.key + '" aria-label="Remove item">' +
+                '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="14" height="14"><path d="M3 6h18m-2 0v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>' +
+              '</button>' +
+            '</div>' +
+          '</div>' +
+        '</div>';
+      });
+      html += '</div>';
+      body.innerHTML = html;
+    }
+
+    // Add to Cart Button Click Handler
     document.addEventListener('click', function (e) {
       var btn = e.target.closest('.purelane-add-to-cart');
       if (!btn) return;
@@ -259,13 +370,13 @@
       var origText = btn.innerHTML;
 
       if (!variantId) {
-        // Fallback demo feedback if no real Shopify variant ID is present
         btn.disabled = true;
         btn.innerHTML = 'Added ✓';
         setTimeout(function () {
           btn.innerHTML = origText;
           btn.disabled = false;
         }, 1800);
+        openCart();
         return;
       }
 
@@ -288,17 +399,7 @@
       })
       .then(function () {
         btn.innerHTML = 'Added ✓';
-        // Fetch current cart item count and update header badge
-        fetch('/cart.js')
-          .then(function (r) { return r.json(); })
-          .then(function (cart) {
-            var dots = document.querySelectorAll('.navtools .dot, header .dot');
-            dots.forEach(function (dot) {
-              dot.textContent = cart.item_count;
-            });
-          })
-          .catch(function () {});
-
+        openCart();
         setTimeout(function () {
           btn.innerHTML = origText;
           btn.disabled = false;
@@ -312,6 +413,30 @@
           btn.disabled = false;
         }, 2000);
       });
+    });
+
+    // Cart Quantity Modifier Handler (/cart/change.js)
+    document.addEventListener('click', function (e) {
+      var modBtn = e.target.closest('.cd-qty-btn, .cd-remove');
+      if (!modBtn) return;
+
+      var key = modBtn.getAttribute('data-key');
+      var qty = modBtn.classList.contains('cd-remove') ? 0 : parseInt(modBtn.getAttribute('data-qty'), 10);
+      if (!key || isNaN(qty)) return;
+
+      fetch('/cart/change.js', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({ id: key, quantity: qty })
+      })
+      .then(function (r) { return r.json(); })
+      .then(function (cart) {
+        renderCartData(cart);
+      })
+      .catch(function (err) { console.error('Cart change error:', err); });
     });
   }
 
