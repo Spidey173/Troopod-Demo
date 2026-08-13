@@ -4781,3 +4781,44 @@ html body .rail a.on {
     padding: 10px 14px;
   }
 }
+
+/* ---------- PURELANE TOAST NOTIFICATION ---------- */
+.purelane-toast {
+  position: fixed;
+  top: 85px;
+  right: 24px;
+  z-index: 100050;
+  padding: 12px 22px;
+  border-radius: 999px;
+  background: rgba(22, 17, 36, 0.96) !important;
+  border: 1.5px solid var(--accent) !important;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4), 0 0 20px rgba(240, 160, 60, 0.25);
+  color: #fff;
+  font-family: 'Outfit', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transform: translateY(-20px);
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.purelane-toast.is-show {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+@media(max-width: 600px) {
+  .purelane-toast {
+    top: 75px;
+    right: 50%;
+    transform: translate(50%, -20px);
+    width: max-content;
+  }
+  .purelane-toast.is-show {
+    transform: translate(50%, 0);
+  }
+}
