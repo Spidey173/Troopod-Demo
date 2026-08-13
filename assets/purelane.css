@@ -1864,7 +1864,7 @@ footer {
   backdrop-filter: blur(18px);
   -webkit-backdrop-filter: blur(18px);
   border-top: 1px solid rgba(236, 230, 247, .12);
-  zoom: 110%;
+  width: 100%;
 }
 
 .fgrid {
@@ -4578,6 +4578,8 @@ main#top,
 #top,
 .shopify-section,
 .shopify-section>*,
+.shopify-section-group-footer-group,
+#shopify-section-footer,
 .purelane-footer-wrapper,
 .page-width,
 .page-width-desktop,
@@ -4587,9 +4589,10 @@ main#top,
   background-color: transparent !important;
   box-shadow: none !important;
   border: none !important;
-  max-width: none !important;
+  max-width: 100% !important;
   width: 100% !important;
   margin: 0 !important;
+  padding: 0 !important;
 }
 
 footer {
@@ -4602,13 +4605,16 @@ footer {
   -webkit-backdrop-filter: blur(18px) !important;
   border-top: 1px solid rgba(75, 58, 143, .13) !important;
   width: 100% !important;
+  max-width: 100% !important;
+  zoom: 100% !important;
 }
 
 /* Footer Container Width & Alignment */
 footer .wrap {
+  width: 100% !important;
   max-width: 1350px !important;
   margin: 0 auto !important;
-  padding: 0 18px !important;
+  padding: 0 24px !important;
 }
 
 .fgrid {
