@@ -1,160 +1,79 @@
-<h1 align="center" style="position: relative;">
-  <br>
-    <img src="./assets/shoppy-x-ray.svg" alt="logo" width="200">
-  <br>
-  Shopify Skeleton Theme
-</h1>
+# Purelane Dawn Theme
 
-A minimal, carefully structured Shopify theme designed to help you quickly get started. Designed with modularity, maintainability, and Shopify's best practices in mind.
+A premium, highly interactive Shopify theme built for the Purelane brand. Derived from Shopify's Dawn/Skeleton foundations, it brings custom glassmorphism visual design systems, fluid water-parallax physics, interactive card quantity steppers (`[ − ]  1  [ + ]`), a glassmorphic Cart Drawer, and a floating checkout bottom bar, all fully manageable through the standard Shopify Customizer.
 
-<p align="center">
-  <a href="./LICENSE.md"><img src="https://img.shields.io/badge/License-MIT-green.svg" alt="License"></a>
-  <a href="./actions/workflows/ci.yml"><img alt="CI" src="https://github.com/Shopify/skeleton-theme/actions/workflows/ci.yml/badge.svg"></a>
-</p>
+---
 
-## Getting started
+## 🚀 Getting Started & Build Notes
 
 ### Prerequisites
+- [Shopify CLI](https://shopify.dev/docs/api/shopify-cli) (latest version)
+- Shopify Development Store (or sandbox environment)
 
-Before starting, ensure you have the latest Shopify CLI installed:
+### Local Development Preview
+1. Clone this repository to your local workspace.
+2. Authenticate and start the Shopify CLI development server:
+   ```bash
+   shopify theme dev
+   ```
+3. Open the provided Localhost preview URL or Admin Editor URL.
 
-- [Shopify CLI](https://shopify.dev/docs/api/shopify-cli) – helps you download, upload, preview themes, and streamline your workflows
+### Build & Deploy Notes
+- **Direct Zip Import**: If deploying directly to an Admin panel without git/CLI setup, import the pre-built theme package: [`purelane-dawn-theme.zip`](./purelane-dawn-theme.zip).
+- **Asset Separation**: Core styling is compiled in [`assets/purelane.css`](./assets/purelane.css) and JavaScript enhancements reside in [`assets/purelane.js`](./assets/purelane.js) for clean code modularity and maintainability.
 
-If you use VS Code:
+---
 
-- [Shopify Liquid VS Code Extension](https://shopify.dev/docs/storefronts/themes/tools/shopify-liquid-vscode) – provides syntax highlighting, linting, inline documentation, and auto-completion specifically designed for Liquid templates
+## 🗄️ Metafields & Metaobjects Configuration
 
-### Clone
+To dynamically control content structure for advanced sections, we designed the following definitions to extend Shopify standard data models:
 
-Clone this repository using Git or Shopify CLI:
+1. **Product Metafields (Namespace: `purelane`)**:
+   - `ingredients_list` (`list.single_line_text_field`): Highlighted botanical active ingredients for clean display on product cards.
+   - `usage_instructions` (`multi_line_text_field`): Step-by-step custom guide on the product page.
+2. **Metaobjects (Type: `ingredient_item`)**:
+   - Used for dynamic rendering in the **Ingredients Showcase Grid**:
+     - `name` (`single_line_text_field`)
+     - `description` (`single_line_text_field`)
+     - `svg_icon` (`multi_line_text_field`): Custom raw SVG markup to maintain high-performance, pixel-perfect illustrations without heavy rasterized image files.
 
-```bash
-git clone git@github.com:Shopify/skeleton-theme.git
-# or
-shopify theme init
-```
+---
 
-### Preview
+## 📝 Design Audit: Original HTML vs. Production Shopify Theme
 
-Preview this theme using Shopify CLI:
+### What was wrong with the original static HTML (`purelane-homepage.html`)?
+1. **Performance & Page Weight**: Inline vector animations and all visual components were embedded in a single file (>150KB), creating poor parsing speeds and rendering blockades.
+2. **Accessibility Deficiencies**: Many dynamic interactive items lacked keyboard focus indicators (`outline`), semantic tags (`main`, `section`, `header`), or appropriate `aria-*` parameters.
+3. **Responsive Breakpoints**: Breakpoints were set in rigid pixels that broke layouts on mid-tier viewports (e.g. tablets, 375px small screens).
+4. **Hardcoded Content**: All product cards, reviews, pricing, discounts, and combo packages were statically hardcoded, leaving store merchants unable to modify pricing or inventory.
 
-```bash
-shopify theme dev
-```
+### What we changed and why:
+- **Modular Component Breakdown**: We modularized the static code into reorderable Liquid sections (Hero, Shop Grid, Combos, Bundles, Ingredients, and Reviews) so merchants can add, remove, and reorder sections easily.
+- **Shopify Storefront API Integration**: Bound all product components to real Shopify product data (`title`, `price`, `compare_at_price`, and image objects) with automatic fallback SVG placeholders.
+- **Live Stepper & AJAX Cart**: Replaced mock buttons with actual asynchronous cart actions. Clicking "Add to cart" instantly mutates to a stepper pill (`[ − ]  1  [ + ]`), increments asynchronously using Shopify's API (`/cart/add.js`), and automatically updates the Cart Drawer and floating bottom notification bar without refreshing.
 
-## Theme architecture
+### What we'd improve with more time:
+- **Section CSS Splitting**: Break the main `purelane.css` stylesheet into section-specific CSS files (`sections.hero.css`, etc.) using Shopify's defer loading to improve initial paint performance.
+- **Localized Schema Fields**: Implement translation strings (`t:`) for all merchant customizer schemas to allow painless multilingual editing.
 
-```bash
-.
-├── assets          # Stores static assets (CSS, JS, images, fonts, etc.)
-├── blocks          # Reusable, nestable, customizable UI components
-├── config          # Global theme settings and customization options
-├── layout          # Top-level wrappers for pages (layout templates)
-├── locales         # Translation files for theme internationalization
-├── sections        # Modular full-width page components
-├── snippets        # Reusable Liquid code or HTML fragments
-└── templates       # Templates combining sections to define page structures
-```
+---
 
-To learn more, refer to the [theme architecture documentation](https://shopify.dev/docs/storefronts/themes/architecture).
+## 🤖 AI Workflow & Systematization Notes
 
-### Templates
+We collaborated with agentic AI tools to build, test, and package this Shopify storefront.
 
-[Templates](https://shopify.dev/docs/storefronts/themes/architecture/templates#template-types) control what's rendered on each type of page in a theme.
+### What we used AI for:
+- Developing the structural schema frameworks (`{% schema %}`) for standardizing blocks and product settings inside the custom sections.
+- Writing regression-free JavaScript loops for synchronous cart state mutations across three separate interface targets (product cards, drawer items, and the floating bottom bar).
 
-The Skeleton Theme scaffolds [JSON templates](https://shopify.dev/docs/storefronts/themes/architecture/templates/json-templates) to make it easy for merchants to customize their store.
+### Where AI failed & How we fixed it:
+- **State De-synchronization**: The AI initially struggled with keeping the card quantity stepper in sync when modifying the items directly in the Cart Drawer.
+  * *Fix*: We implemented a global cart-listener pub/sub pattern in [`assets/purelane.js`](./assets/purelane.js) that fires whenever an AJAX operation succeeds, forcing every interactive cart component on the viewport to pull the new quantity states.
+- **SVG Encoding Escapes**: AI generated XML schemas inside YAML settings blocks that broke the Liquid compiler.
+  * *Fix*: Replaced schema inputs with clean Liquid text settings, validating layout schemas.
 
-None of the template types are required, and not all of them are included in the Skeleton Theme. Refer to the [template types reference](https://shopify.dev/docs/storefronts/themes/architecture/templates#template-types) for a full list.
-
-### Sections
-
-[Sections](https://shopify.dev/docs/storefronts/themes/architecture/sections) are Liquid files that allow you to create reusable modules of content that can be customized by merchants. They can also include blocks which allow merchants to add, remove, and reorder content within a section.
-
-Sections are made customizable by including a `{% schema %}` in the body. For more information, refer to the [section schema documentation](https://shopify.dev/docs/storefronts/themes/architecture/sections/section-schema).
-
-### Blocks
-
-[Blocks](https://shopify.dev/docs/storefronts/themes/architecture/blocks) let developers create flexible layouts by breaking down sections into smaller, reusable pieces of Liquid. Each block has its own set of settings, and can be added, removed, and reordered within a section.
-
-Blocks are made customizable by including a `{% schema %}` in the body. For more information, refer to the [block schema documentation](https://shopify.dev/docs/storefronts/themes/architecture/blocks/theme-blocks/schema).
-
-## Schemas
-
-When developing components defined by schema settings, we recommend these guidelines to simplify your code:
-
-- **Single property settings**: For settings that correspond to a single CSS property, use CSS variables:
-
-  ```liquid
-  <div class="collection" style="--gap: {{ block.settings.gap }}px">
-    ...
-  </div>
-
-  {% stylesheet %}
-    .collection {
-      gap: var(--gap);
-    }
-  {% endstylesheet %}
-
-  {% schema %}
-  {
-    "settings": [{
-      "type": "range",
-      "label": "gap",
-      "id": "gap",
-      "min": 0,
-      "max": 100,
-      "unit": "px",
-      "default": 0,
-    }]
-  }
-  {% endschema %}
-  ```
-
-- **Multiple property settings**: For settings that control multiple CSS properties, use CSS classes:
-
-  ```liquid
-  <div class="collection {{ block.settings.layout }}">
-    ...
-  </div>
-
-  {% stylesheet %}
-    .collection--full-width {
-      /* multiple styles */
-    }
-    .collection--narrow {
-      /* multiple styles */
-    }
-  {% endstylesheet %}
-
-  {% schema %}
-  {
-    "settings": [{
-      "type": "select",
-      "id": "layout",
-      "label": "layout",
-      "values": [
-        { "value": "collection--full-width", "label": "t:options.full" },
-        { "value": "collection--narrow", "label": "t:options.narrow" }
-      ]
-    }]
-  }
-  {% endschema %}
-  ```
-
-## CSS & JavaScript
-
-For CSS and JavaScript, we recommend using the [`{% stylesheet %}`](https://shopify.dev/docs/api/liquid/tags#stylesheet) and [`{% javascript %}`](https://shopify.dev/docs/api/liquid/tags/javascript) tags. They can be included multiple times, but the code will only appear once.
-
-### `critical.css`
-
-The Skeleton Theme explicitly separates essential CSS necessary for every page into a dedicated `critical.css` file.
-
-## Contributing
-
-We're excited for your contributions to the Skeleton Theme! This repository aims to remain as lean, lightweight, and fundamental as possible, and we kindly ask your contributions to align with this intention.
-
-Visit our [CONTRIBUTING.md](./CONTRIBUTING.md) for a detailed overview of our process, guidelines, and recommendations.
-
-## License
-
-Skeleton Theme is open-sourced under the [MIT](./LICENSE.md) License.
+### Systematizing for 20+ Similar Projects:
+To deliver high-velocity DTC landing pages at scale:
+1. **Liquid Section Templates**: Create a scaffolding generator that automatically spins up customizable Shopify sections containing standardized accessibility inputs and responsive swipe tracks.
+2. **Unified Cart Handler Class**: Develop a reusable NPM-packaged cart state manager that exposes custom DOM events (`cart:update`, `cart:add`), abstracting API requests away from design-specific JS files.
+3. **Linting Rules**: Enforce custom `theme-check` rules that prevent inline hardcoded styles, ensuring visual systems remain tied to tailorable theme CSS variable frameworks.
