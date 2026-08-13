@@ -4653,3 +4653,131 @@ html body .rail a.on {
   height: 22px !important;
   border-radius: 999px !important;
 }
+
+/* ---------- DAILYDROP INLINE CARD STEPPER ---------- */
+.purelane-cart-action {
+  width: 100%;
+}
+
+.purelane-qty-stepper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 4px 8px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, rgba(30, 24, 50, 0.95), rgba(50, 40, 80, 0.95));
+  border: 1.5px solid var(--accent);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
+}
+
+.dd-stepper-btn {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: none;
+  background: var(--accent);
+  color: #17102b;
+  font-size: 16px;
+  font-weight: 800;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  line-height: 1;
+  transition: transform 0.15s ease, background 0.15s ease;
+}
+
+.dd-stepper-btn:hover {
+  transform: scale(1.1);
+  background: #fff;
+}
+
+.dd-stepper-val {
+  font-family: 'Outfit', sans-serif;
+  font-size: 15px;
+  font-weight: 800;
+  color: #fff;
+  min-width: 20px;
+  text-align: center;
+}
+
+/* ---------- DAILYDROP FLOATING BOTTOM CART BAR ---------- */
+.dailydrop-cart-bar {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 99900;
+  width: calc(100% - 32px);
+  max-width: 460px;
+  padding: 12px 18px;
+  border-radius: 20px;
+  background: rgba(22, 17, 36, 0.94) !important;
+  border: 1.5px solid rgba(240, 160, 60, 0.4) !important;
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.5), 0 0 20px rgba(240, 160, 60, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  animation: ddSlideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes ddSlideUp {
+  from {
+    transform: translate(-50%, 60px);
+    opacity: 0;
+  }
+  to {
+    transform: translate(-50%, 0);
+    opacity: 1;
+  }
+}
+
+.dd-cart-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.dd-bag {
+  font-size: 24px;
+  line-height: 1;
+}
+
+.dd-details {
+  display: flex;
+  flex-direction: column;
+}
+
+.dd-details strong {
+  font-family: 'Outfit', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.2;
+}
+
+.dd-details span {
+  font-family: 'Outfit', sans-serif;
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--accent);
+}
+
+.dd-view-cart-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 18px !important;
+  font-size: 13px !important;
+  font-weight: 700 !important;
+  border-radius: 999px !important;
+  box-shadow: 0 4px 12px rgba(240, 160, 60, 0.3) !important;
+}
+
+@media(max-width: 600px) {
+  .dailydrop-cart-bar {
+    bottom: 16px;
+    width: calc(100% - 24px);
+    padding: 10px 14px;
+  }
+}

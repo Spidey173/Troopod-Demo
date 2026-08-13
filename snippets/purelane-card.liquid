@@ -80,13 +80,19 @@
   </div>
 
   {%- if is_available -%}
-    <button
-      type="button"
-      class="btn btn-ghost btn-sm purelane-add-to-cart"
-      {% if prod != blank %}data-variant-id="{{ prod.selected_or_first_available_variant.id }}"{% endif %}
-    >
-      Add to cart
-    </button>
+    <div class="purelane-cart-action" {% if prod != blank %}data-variant-id="{{ prod.selected_or_first_available_variant.id }}"{% endif %}>
+      <button
+        type="button"
+        class="btn btn-ghost btn-sm purelane-add-to-cart"
+      >
+        Add to cart
+      </button>
+      <div class="purelane-qty-stepper" style="display: none;">
+        <button type="button" class="dd-stepper-btn dd-step-minus" aria-label="Decrease quantity">&minus;</button>
+        <span class="dd-stepper-val">1</span>
+        <button type="button" class="dd-stepper-btn dd-step-plus" aria-label="Increase quantity">&#43;</button>
+      </div>
+    </div>
   {%- else -%}
     <button type="button" class="btn btn-ghost btn-sm" disabled style="opacity: 0.5; cursor: not-allowed;">
       Out of Stock

@@ -281,10 +281,10 @@
       }
     });
 
-    // Header Cart Icon Click Handler
+    // Open Cart trigger for DailyDrop float bar & Header
     document.addEventListener('click', function (e) {
-      var cartIconLink = e.target.closest('header .ico[aria-label*="Cart"], .navtools a[href*="cart"]');
-      if (cartIconLink) {
+      var trigger = e.target.closest('#ddOpenCart, header .ico[aria-label*="Cart"], .navtools a[href*="cart"]');
+      if (trigger) {
         e.preventDefault();
         openCart();
       }
@@ -300,13 +300,51 @@
     }
 
     function renderCartData(cart) {
-      // Update count dots
+      // Update count dots & header badges
       var dots = document.querySelectorAll('.navtools .dot, header .dot, .cd-count');
       dots.forEach(function (dot) {
         if (dot.classList.contains('cd-count')) {
           dot.textContent = cart.item_count + (cart.item_count === 1 ? ' item' : ' items');
         } else {
           dot.textContent = cart.item_count;
+        }
+      });
+
+      // Update DailyDrop Floating Bottom Bar
+      var ddBar = document.getElementById('dailydropCartBar');
+      var ddCount = document.getElementById('ddItemCount');
+      var ddPrice = document.getElementById('ddTotalPrice');
+      if (ddBar) {
+        if (cart.item_count > 0) {
+          ddBar.style.display = 'flex';
+          if (ddCount) ddCount.textContent = cart.item_count + (cart.item_count === 1 ? ' item' : ' items');
+          if (ddPrice) ddPrice.textContent = formatMoney(cart.total_price);
+        } else {
+          ddBar.style.display = 'none';
+        }
+      }
+
+      // Sync DailyDrop Inline Card Steppers across all product cards
+      var cardActions = document.querySelectorAll('.purelane-cart-action');
+      cardActions.forEach(function (action) {
+        var vId = action.getAttribute('data-variant-id');
+        var addBtn = action.querySelector('.purelane-add-to-cart');
+        var stepper = action.querySelector('.purelane-qty-stepper');
+        var valSpan = action.querySelector('.dd-stepper-val');
+
+        if (!vId || !cart.items) return;
+
+        var cartItem = cart.items.find(function (it) {
+          return String(it.variant_id) === String(vId) || String(it.id) === String(vId);
+        });
+
+        if (cartItem && cartItem.quantity > 0) {
+          if (addBtn) addBtn.style.display = 'none';
+          if (stepper) stepper.style.display = 'flex';
+          if (valSpan) valSpan.textContent = cartItem.quantity;
+        } else {
+          if (addBtn) addBtn.style.display = '';
+          if (stepper) stepper.style.display = 'none';
         }
       });
 
@@ -366,7 +404,8 @@
       var btn = e.target.closest('.purelane-add-to-cart');
       if (!btn) return;
 
-      var variantId = btn.getAttribute('data-variant-id');
+      var actionWrap = btn.closest('.purelane-cart-action');
+      var variantId = actionWrap ? actionWrap.getAttribute('data-variant-id') : btn.getAttribute('data-variant-id');
       var origText = btn.innerHTML;
 
       if (!variantId) {
@@ -399,11 +438,11 @@
       })
       .then(function () {
         btn.innerHTML = 'Added ✓';
-        openCart();
+        refreshCart();
         setTimeout(function () {
           btn.innerHTML = origText;
           btn.disabled = false;
-        }, 2200);
+        }, 1200);
       })
       .catch(function (err) {
         console.error('Purelane Cart Error:', err);
@@ -415,7 +454,45 @@
       });
     });
 
-    // Cart Quantity Modifier Handler (/cart/change.js)
+    // DailyDrop Inline Card Stepper (- / +) Click Handler
+    document.addEventListener('click', function (e) {
+      var stepBtn = e.target.closest('.dd-step-minus, .dd-step-plus');
+      if (!stepBtn) return;
+
+      var actionWrap = stepBtn.closest('.purelane-cart-action');
+      if (!actionWrap) return;
+
+      var vId = actionWrap.getAttribute('data-variant-id');
+      if (!vId) return;
+
+      var isPlus = stepBtn.classList.contains('dd-step-plus');
+
+      fetch('/cart.js')
+        .then(function (r) { return r.json(); })
+        .then(function (cart) {
+          var item = cart.items.find(function (it) {
+            return String(it.variant_id) === String(vId) || String(it.id) === String(vId);
+          });
+          var currentQty = item ? item.quantity : 0;
+          var newQty = isPlus ? currentQty + 1 : Math.max(0, currentQty - 1);
+
+          return fetch('/cart/change.js', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Accept': 'application/json'
+            },
+            body: JSON.stringify({ id: String(vId), quantity: newQty })
+          });
+        })
+        .then(function (r) { return r.json(); })
+        .then(function (cart) {
+          renderCartData(cart);
+        })
+        .catch(function (err) { console.error('Card stepper error:', err); });
+    });
+
+    // Cart Drawer Quantity Modifier Handler (/cart/change.js)
     document.addEventListener('click', function (e) {
       var modBtn = e.target.closest('.cd-qty-btn, .cd-remove');
       if (!modBtn) return;
@@ -438,6 +515,9 @@
       })
       .catch(function (err) { console.error('Cart change error:', err); });
     });
+
+    // Initial Cart Refresh on Load
+    refreshCart();
   }
 
   /* DOM Initialization */

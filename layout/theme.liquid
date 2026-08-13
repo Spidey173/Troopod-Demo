@@ -47,6 +47,19 @@
         <span>Free shipping, always</span>
       </span>
       <a class="btn btn-primary btn-sm" href="#bundles">Build bundle</a>
+    <!-- DailyDrop Floating Bottom Cart Bar -->
+    <div class="dailydrop-cart-bar glass-2" id="dailydropCartBar" aria-label="Cart summary" {% if cart.item_count == 0 %}style="display:none;"{% endif %}>
+      <div class="dd-cart-info">
+        <span class="dd-bag">🛍️</span>
+        <div class="dd-details">
+          <strong id="ddItemCount">{{ cart.item_count }} {% if cart.item_count == 1 %}item{% else %}items{% endif %}</strong>
+          <span id="ddTotalPrice">{{ cart.total_price | money }}</span>
+        </div>
+      </div>
+      <button type="button" class="btn btn-primary btn-sm dd-view-cart-btn" id="ddOpenCart">
+        View Cart
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M5 12h13m-5-6 6 6-6 6"/></svg>
+      </button>
     </div>
 
     <!-- Purelane Cart Drawer -->
