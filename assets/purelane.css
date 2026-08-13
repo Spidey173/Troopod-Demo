@@ -4606,16 +4606,15 @@ footer {
   border-top: 1px solid rgba(75, 58, 143, .13) !important;
   width: 100% !important;
   max-width: 100% !important;
-  zoom: 100% !important;
 }
 
-/* Footer Container Left Alignment */
+/* Footer Container Width & Left Shift Alignment */
 footer .wrap {
   width: 100% !important;
-  max-width: 1450px !important;
-  margin: 0 auto 0 2% !important;
-  padding-left: 20px !important;
-  padding-right: 40px !important;
+  max-width: var(--maxw) !important;
+  margin-left: 0 !important;
+  margin-right: auto !important;
+  padding: 0 40px !important;
 }
 
 .fgrid {
