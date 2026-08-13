@@ -45,6 +45,7 @@ body {
   padding-bottom: 74px;
   padding-top: 2cm;
   margin-top: 0;
+  zoom: 110%;
 }
 
 @media(min-width:960px) {
