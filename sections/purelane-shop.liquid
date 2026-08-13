@@ -1,0 +1,128 @@
+{% comment %}
+  Section 02: Purelane Shop / Product Grid (#shop)
+  Displays Bestseller product grid, using `render 'purelane-card'` snippet for reusable product card components.
+{% endcomment %}
+
+<section class="sec" id="shop" data-scene="3">
+  <div class="wrap">
+    <div class="panel-head rv">
+      <span class="kicker">{{ section.settings.kicker | default: 'Bestsellers' }}</span>
+      <h2 class="d2" style="margin-top:12px">{{ section.settings.heading | default: 'Loved by 30,000 homes' }}</h2>
+      <div class="rule">
+        <i></i>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21c0-6.5 3.5-11 8-12.5C20 15 16.5 20 12 21Z"/><path d="M12 21C12 14.5 8.5 10 4 8.5 4 15 7.5 20 12 21Z"/></svg>
+        <i></i>
+      </div>
+    </div>
+
+    <div class="shelf">
+      {%- if section.blocks.size > 0 -%}
+        {%- for block in section.blocks -%}
+          {%- if block.settings.product != blank -%}
+            {%- render 'purelane-card', card_product: block.settings.product, badge_label: block.settings.badge_label -%}
+          {%- else -%}
+            {%- render 'purelane-card', fallback_title: block.settings.title, badge_label: block.settings.badge_label, rating_val: block.settings.rating, review_cnt: block.settings.review_count, fallback_pimg: block.settings.pimg_class -%}
+          {%- endif -%}
+        {%- endfor -%}
+      {%- else -%}
+        {%- assign selected_collection = section.settings.collection -%}
+        {%- if selected_collection != blank and selected_collection.products.size > 0 -%}
+          {%- for product in selected_collection.products limit: section.settings.products_to_show -%}
+            {%- render 'purelane-card', card_product: product -%}
+          {%- endfor -%}
+        {%- else -%}
+          <!-- Demonstration cards matching purelane-homepage.html -->
+          {%- render 'purelane-card', fallback_title: 'Tap cleaner & limescale remover', badge_label: 'Best seller', rating_val: '4.8', review_cnt: '237', fallback_pimg: 'p-tap' -%}
+          {%- render 'purelane-card', fallback_title: 'Kitchen cleaner, foaming', badge_label: 'Best seller', rating_val: '4.8', review_cnt: '254', custom_class: 'rv-d1', fallback_pimg: 'p-kitchen' -%}
+          {%- render 'purelane-card', fallback_title: 'Copper, bronze & brass cleaner', badge_label: 'Top rated', rating_val: '4.8', review_cnt: '231', custom_class: 'rv-d2', fallback_pimg: 'p-metal' -%}
+          {%- render 'purelane-card', fallback_title: 'Washing machine cleaner & descaler', badge_label: 'New', rating_val: '4.8', review_cnt: '183', custom_class: 'rv-d3', fallback_pimg: 'p-wm' -%}
+        {%- endif -%}
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Purelane Shop Grid",
+  "tag": "section",
+  "class": "purelane-shop-wrapper",
+  "settings": [
+    {
+      "type": "text",
+      "id": "kicker",
+      "label": "Kicker Text",
+      "default": "Bestsellers"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Section Heading",
+      "default": "Loved by 30,000 homes"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Product Collection"
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "min": 2,
+      "max": 12,
+      "step": 2,
+      "default": 8,
+      "label": "Products to show (when using collection)"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "product_card",
+      "name": "Custom Product Card",
+      "settings": [
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Shopify Product"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Custom Title (if no product selected)",
+          "default": "Tap cleaner & limescale remover"
+        },
+        {
+          "type": "text",
+          "id": "badge_label",
+          "label": "Badge Pill Tag",
+          "default": "Best seller"
+        },
+        {
+          "type": "text",
+          "id": "rating",
+          "label": "Rating Score",
+          "default": "4.8"
+        },
+        {
+          "type": "text",
+          "id": "review_count",
+          "label": "Review Count",
+          "default": "237"
+        },
+        {
+          "type": "text",
+          "id": "pimg_class",
+          "label": "CSS Bottle Art Class (e.g. p-tap, p-kitchen, p-metal, p-wm)",
+          "default": "p-tap"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Purelane Shop Grid"
+    }
+  ]
+}
+{% endschema %}
+

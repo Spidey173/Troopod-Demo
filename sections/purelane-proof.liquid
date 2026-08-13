@@ -1,0 +1,129 @@
+{% comment %}
+  Bonus Section: Purelane Proof & Rotator (#proof)
+  Features interactive product rotator carousel and 4-stat metric rings grid.
+{% endcomment %}
+
+<section class="sec" id="proof" data-scene="3">
+  <div class="wrap">
+    <div class="glass sec-pad rv">
+      <div class="proof">
+        <div class="proof-l">
+          <span class="kicker">{{ section.settings.kicker | default: 'Why it works' }}</span>
+          <h2 class="d2" style="margin-top:12px">{{ section.settings.heading | default: 'Tough on grime.<br>Gentle on everything else.' }}</h2>
+          <p class="body-s" style="max-width:40ch">{{ section.settings.subheading | default: 'Every formula is built on plant-derived cleansers and essential oils. It behaves exactly like the cleaner you are used to, minus the things you never signed up for.' }}</p>
+          <a class="btn btn-primary" href="{{ section.settings.btn_link | default: '#ingredients' }}">
+            {{ section.settings.btn_label | default: 'See the ingredient list' }}
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h13m-5-6 6 6-6 6"/></svg>
+          </a>
+        </div>
+
+        <div class="glass-2 rot" id="rot" aria-hidden="true">
+          <div class="frame">
+            <div class="pimg p-kitchen on" role="img" aria-label="Kitchen cleaner" data-name="Kitchen cleaner" data-note="Foam lifts grease, no scrubbing"></div>
+            <div class="pimg p-tap" role="img" aria-label="Tap cleaner" data-name="Tap &amp; limescale" data-note="Melts hard water stains"></div>
+            <div class="pimg p-laundry" role="img" aria-label="Laundry detergent" data-name="Laundry detergent" data-note="Tough on odour, soft on fabric"></div>
+            <div class="pimg p-toilet" role="img" aria-label="Toilet cleaner" data-name="Toilet cleaner" data-note="Kills 99.9% of germs"></div>
+            <div class="pimg p-floor" role="img" aria-label="Floor cleaner" data-name="Floor cleaner" data-note="Neem powered, pet safe"></div>
+            <div class="pimg p-dish" role="img" aria-label="Dishwash gel" data-name="Dishwash gel" data-note="Cuts grease, kind to hands"></div>
+          </div>
+          <div class="cap"><b>Kitchen cleaner</b><span>Foam lifts grease, no scrubbing</span></div>
+          <div class="dots"><i class="on"></i><i></i><i></i><i></i><i></i><i></i></div>
+        </div>
+      </div>
+
+      <div class="glass-2 stats proof-stats">
+        <div class="stat">
+          <div class="ring">{{ section.settings.stat1_val | default: '99.9%' }}</div>
+          <h5>{{ section.settings.stat1_title | default: 'Germ kill' }}</h5>
+          <p>{{ section.settings.stat1_sub | default: 'Tested against germs and bacteria' }}</p>
+        </div>
+        <div class="stat">
+          <div class="ring">{{ section.settings.stat2_val | default: '0%' }}</div>
+          <h5>{{ section.settings.stat2_title | default: 'Sulphates' }}</h5>
+          <p>{{ section.settings.stat2_sub | default: 'No SLS, chlorine or parabens' }}</p>
+        </div>
+        <div class="stat">
+          <div class="ring">{{ section.settings.stat3_val | default: '100%' }}</div>
+          <h5>{{ section.settings.stat3_title | default: 'Plant based' }}</h5>
+          <p>{{ section.settings.stat3_sub | default: 'Cleansers derived from plants' }}</p>
+        </div>
+        <div class="stat">
+          <div class="ring">{{ section.settings.stat4_val | default: '4.8' }}</div>
+          <h5>{{ section.settings.stat4_title | default: 'Rated' }}</h5>
+          <p>{{ section.settings.stat4_sub | default: 'Across 8,000+ verified reviews' }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Purelane Proof & Rotator",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "kicker",
+      "label": "Kicker",
+      "default": "Why it works"
+    },
+    {
+      "type": "html",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Tough on grime.<br>Gentle on everything else."
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Subheading Description",
+      "default": "Every formula is built on plant-derived cleansers and essential oils."
+    },
+    {
+      "type": "text",
+      "id": "btn_label",
+      "label": "Button Label",
+      "default": "See the ingredient list"
+    },
+    {
+      "type": "url",
+      "id": "btn_link",
+      "label": "Button Link"
+    },
+    {
+      "type": "header",
+      "content": "Stat 1 Settings"
+    },
+    { "type": "text", "id": "stat1_val", "label": "Stat 1 Value", "default": "99.9%" },
+    { "type": "text", "id": "stat1_title", "label": "Stat 1 Title", "default": "Germ kill" },
+    { "type": "text", "id": "stat1_sub", "label": "Stat 1 Subtitle", "default": "Tested against germs and bacteria" },
+    {
+      "type": "header",
+      "content": "Stat 2 Settings"
+    },
+    { "type": "text", "id": "stat2_val", "label": "Stat 2 Value", "default": "0%" },
+    { "type": "text", "id": "stat2_title", "label": "Stat 2 Title", "default": "Sulphates" },
+    { "type": "text", "id": "stat2_sub", "label": "Stat 2 Subtitle", "default": "No SLS, chlorine or parabens" },
+    {
+      "type": "header",
+      "content": "Stat 3 Settings"
+    },
+    { "type": "text", "id": "stat3_val", "label": "Stat 3 Value", "default": "100%" },
+    { "type": "text", "id": "stat3_title", "label": "Stat 3 Title", "default": "Plant based" },
+    { "type": "text", "id": "stat3_sub", "label": "Stat 3 Subtitle", "default": "Cleansers derived from plants" },
+    {
+      "type": "header",
+      "content": "Stat 4 Settings"
+    },
+    { "type": "text", "id": "stat4_val", "label": "Stat 4 Value", "default": "4.8" },
+    { "type": "text", "id": "stat4_title", "label": "Stat 4 Title", "default": "Rated" },
+    { "type": "text", "id": "stat4_sub", "label": "Stat 4 Subtitle", "default": "Across 8,000+ verified reviews" }
+  ],
+  "presets": [
+    {
+      "name": "Purelane Proof & Rotator"
+    }
+  ]
+}
+{% endschema %}

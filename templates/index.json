@@ -1,0 +1,78 @@
+{
+  "sections": {
+    "hero": {
+      "type": "purelane-hero",
+      "settings": {
+        "heading_prefix": "Clean",
+        "heading_middle": "That",
+        "heading_highlight": "Lasts",
+        "subheading": "Homecare that works on the toughest grime, made from plants. Kind to your home, your family and the world outside it.",
+        "primary_btn_label": "Shop now",
+        "secondary_btn_label": "How it works"
+      }
+    },
+    "reviews": {
+      "type": "purelane-reviews",
+      "settings": {}
+    },
+    "ingredients": {
+      "type": "purelane-ingredients",
+      "settings": {}
+    },
+    "how": {
+      "type": "purelane-how",
+      "settings": {}
+    },
+    "proof": {
+      "type": "purelane-proof",
+      "settings": {}
+    },
+    "combos": {
+      "type": "purelane-combos",
+      "settings": {}
+    },
+    "bundles": {
+      "type": "purelane-bundles",
+      "settings": {}
+    },
+    "shop": {
+      "type": "purelane-shop",
+      "settings": {}
+    },
+    "range": {
+      "type": "purelane-range",
+      "settings": {}
+    },
+    "whybundles": {
+      "type": "purelane-whybundles",
+      "settings": {}
+    },
+    "categories": {
+      "type": "purelane-categories",
+      "settings": {}
+    },
+    "trust_bar": {
+      "type": "purelane-trust-bar",
+      "settings": {}
+    },
+    "signup": {
+      "type": "purelane-signup",
+      "settings": {}
+    }
+  },
+  "order": [
+    "hero",
+    "reviews",
+    "ingredients",
+    "how",
+    "proof",
+    "combos",
+    "bundles",
+    "shop",
+    "range",
+    "whybundles",
+    "categories",
+    "trust_bar",
+    "signup"
+  ]
+}

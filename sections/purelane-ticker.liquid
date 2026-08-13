@@ -1,0 +1,53 @@
+{% comment %}
+  Bonus Section: Purelane Announcement Ticker
+  Infinite marquee announcement bar.
+{% endcomment %}
+
+<div class="ticker" aria-hidden="true">
+  <div class="track">
+    {%- for block in section.blocks -%}
+      <span>{{ block.settings.text_prefix }} <b>{{ block.settings.text_highlight }}</b></span>
+    {%- else -%}
+      <span>Free shipping <b>on every bundle across India</b></span>
+      <span>100% plant-based <b>and non-toxic</b></span>
+      <span>Loved by <b>30,000+ happy homes</b></span>
+      <span>Buy 3 <b>at flat ₹499</b></span>
+      <span>Free shipping <b>on every bundle across India</b></span>
+      <span>100% plant-based <b>and non-toxic</b></span>
+      <span>Loved by <b>30,000+ happy homes</b></span>
+      <span>Buy 3 <b>at flat ₹499</b></span>
+    {%- endfor -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Purelane Ticker Bar",
+  "tag": "section",
+  "blocks": [
+    {
+      "type": "item",
+      "name": "Ticker Item",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text_prefix",
+          "label": "Text Prefix",
+          "default": "Free shipping"
+        },
+        {
+          "type": "text",
+          "id": "text_highlight",
+          "label": "Text Highlight (Bold Accent)",
+          "default": "on every bundle across India"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Purelane Ticker Bar"
+    }
+  ]
+}
+{% endschema %}

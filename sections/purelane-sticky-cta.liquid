@@ -1,0 +1,51 @@
+{% comment %}
+  Purelane Sticky Bottom Mobile CTA Bar
+  Appears fixed at bottom of screen on mobile devices (<960px).
+{% endcomment %}
+
+<div class="sticky" aria-label="Quick bundle offer">
+  <span class="lbl">
+    <b>{{ section.settings.bold_text | default: 'Pick any 3, pay ₹499' }}</b>
+    <span>{{ section.settings.sub_text | default: 'Free shipping, always' }}</span>
+  </span>
+  <a class="btn btn-primary btn-sm" href="{{ section.settings.btn_link | default: '#bundles' }}">
+    {{ section.settings.btn_label | default: 'Build bundle' }}
+  </a>
+</div>
+
+{% schema %}
+{
+  "name": "Sticky Mobile CTA",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "bold_text",
+      "label": "Bold Offer Headline",
+      "default": "Pick any 3, pay ₹499"
+    },
+    {
+      "type": "text",
+      "id": "sub_text",
+      "label": "Subtext Note",
+      "default": "Free shipping, always"
+    },
+    {
+      "type": "text",
+      "id": "btn_label",
+      "label": "Button Label",
+      "default": "Build bundle"
+    },
+    {
+      "type": "url",
+      "id": "btn_link",
+      "label": "Button Target Link"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Sticky Mobile CTA"
+    }
+  ]
+}
+{% endschema %}

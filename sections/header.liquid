@@ -1,0 +1,87 @@
+{% comment %}
+  Purelane Header Section
+  Floating glass navigation pill matching purelane-homepage.html specification.
+{% endcomment %}
+
+<header id="hdr">
+  <div class="navpill glass">
+    <a class="brand" href="{{ routes.root_url }}#top" aria-label="{{ shop.name }} home">
+      <span class="mark">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:#b8701c">
+          <path d="M12 3 20.5 8v8L12 21 3.5 16V8L12 3Z"/>
+          <path d="M12 12 20.5 8M12 12v9M12 12 3.5 8"/>
+        </svg>
+      </span>
+      <span class="txt">
+        <span class="n1">{{ section.settings.brand_title | default: 'Purelane' }}</span>
+        <span class="n2">{{ section.settings.brand_subtitle | default: 'Clean, simply' }}</span>
+      </span>
+    </a>
+
+    <nav class="nav" aria-label="Main navigation">
+      {%- if section.settings.menu != blank -%}
+        {%- for link in section.settings.menu.links -%}
+          <a href="{{ link.url }}">{{ link.title }}</a>
+        {%- endfor -%}
+      {%- else -%}
+        <a href="#top">Home</a>
+        <a href="#ingredients">Ingredients</a>
+        <a href="#how">How it works</a>
+        <a href="#shop">Shop</a>
+        <a href="#bundles">Bundles</a>
+      {%- endif -%}
+    </nav>
+
+    <div class="navtools">
+      <button type="button" class="ico hide-s" aria-label="Search">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      </button>
+
+      {%- if shop.customer_accounts_enabled -%}
+        <a href="{{ routes.account_url }}" class="ico hide-s" aria-label="Account">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="8" r="3.6"/><path d="M5 20c0-3.6 3.1-5.6 7-5.6s7 2 7 5.6"/></svg>
+        </a>
+      {%- else -%}
+        <button type="button" class="ico hide-s" aria-label="Account">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="8" r="3.6"/><path d="M5 20c0-3.6 3.1-5.6 7-5.6s7 2 7 5.6"/></svg>
+        </button>
+      {%- endif -%}
+
+      <a href="{{ routes.cart_url }}" class="ico" aria-label="Cart, {{ cart.item_count }} items">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h2l2.2 10.4a1.6 1.6 0 0 0 1.6 1.3h7.6a1.6 1.6 0 0 0 1.6-1.3L20.5 9H6.4"/><circle cx="10" cy="20.5" r="1.1"/><circle cx="17.5" cy="20.5" r="1.1"/></svg>
+        <span class="dot">{{ cart.item_count }}</span>
+      </a>
+
+      <button type="button" class="ico burger" aria-label="Menu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 8h16M4 16h16"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+{% schema %}
+{
+  "name": "Purelane Header",
+  "tag": "section",
+  "class": "purelane-header-wrapper",
+  "settings": [
+    {
+      "type": "text",
+      "id": "brand_title",
+      "label": "Brand Name",
+      "default": "Purelane"
+    },
+    {
+      "type": "text",
+      "id": "brand_subtitle",
+      "label": "Brand Subtitle",
+      "default": "Clean, simply"
+    },
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Navigation Menu"
+    }
+  ]
+}
+{% endschema %}

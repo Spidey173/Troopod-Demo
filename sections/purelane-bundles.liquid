@@ -1,0 +1,278 @@
+{% comment %}
+  Section 04: Purelane Bundles (#bundles)
+  Tiered pricing grid (Starter, Most Popular, Whole Home) with product previews, unit cost breakdowns, and feature checklists.
+{% endcomment %}
+
+<section class="sec" id="bundles" data-scene="3">
+  <div class="wrap">
+    <div class="glass sec-pad rv" style="margin-bottom:16px">
+      <div class="panel-head" style="margin-bottom:0">
+        <span class="kicker">{{ section.settings.kicker | default: 'Build your bundle' }}</span>
+        <h2 class="d2" style="margin-top:12px">{{ section.settings.heading | default: 'One box. Every room.' }}</h2>
+        <p class="lede" style="margin:0 auto">{{ section.settings.subheading | default: 'Mix and match across kitchen, laundry, home and skin. One flat price, no code needed, free shipping either way.' }}</p>
+      </div>
+    </div>
+
+    <div class="tiers">
+      {%- for block in section.blocks -%}
+        <article class="glass tier {% if block.settings.is_best %}best{% endif %} rv" {{ block.shopify_attributes }}>
+          {%- if block.settings.tag_text != blank -%}
+            <span class="tag">{{ block.settings.tag_text }}</span>
+          {%- endif -%}
+
+          <div class="tierpix {% if block.settings.qty >= 5 %}five{% endif %}" aria-hidden="true">
+            <div class="pimg p-kitchen" role="img" aria-label="Product preview"></div>
+            {%- if block.settings.qty >= 3 -%}
+              <div class="pimg p-tap" role="img" aria-label="Product preview"></div>
+              <div class="pimg p-dish" role="img" aria-label="Product preview"></div>
+            {%- endif -%}
+            {%- if block.settings.qty >= 5 -%}
+              <div class="pimg p-floor" role="img" aria-label="Product preview"></div>
+              <div class="pimg p-toilet" role="img" aria-label="Product preview"></div>
+            {%- endif -%}
+          </div>
+
+          <div class="qty">{{ block.settings.qty | default: 3 }}<small>Products</small></div>
+          <div class="price">
+            {%- if block.settings.bundle_product != blank -%}
+              {{ block.settings.bundle_product.price | money }}
+              {%- if block.settings.bundle_product.compare_at_price > block.settings.bundle_product.price -%}
+                <s>{{ block.settings.bundle_product.compare_at_price | money }}</s>
+              {%- endif -%}
+            {%- else -%}
+              {{ block.settings.price }}
+              {%- if block.settings.compare_price != blank -%}
+                <s>{{ block.settings.compare_price }}</s>
+              {%- endif -%}
+            {%- endif -%}
+          </div>
+          <p class="body-s" style="font-size:12px">{{ block.settings.per_product_text }}</p>
+
+          <ul>
+            {%- if block.settings.feature1 != blank -%}
+              <li>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 13 4 4L19 7"/></svg>
+                {{ block.settings.feature1 }}
+              </li>
+            {%- endif -%}
+            {%- if block.settings.feature2 != blank -%}
+              <li>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 13 4 4L19 7"/></svg>
+                {{ block.settings.feature2 }}
+              </li>
+            {%- endif -%}
+            {%- if block.settings.feature3 != blank -%}
+              <li>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 13 4 4L19 7"/></svg>
+                {{ block.settings.feature3 }}
+              </li>
+            {%- endif -%}
+          </ul>
+
+          <a class="btn {% if block.settings.is_best %}btn-primary{% else %}btn-ghost{% endif %}" href="{{ block.settings.button_link | default: '#shop' }}">
+            {{ block.settings.button_label | default: 'Build this box' }}
+            {%- if block.settings.is_best -%}
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h13m-5-6 6 6-6 6"/></svg>
+            {%- endif -%}
+          </a>
+        </article>
+      {%- else -%}
+        <!-- Fallback demonstration tiers matching prototype -->
+        <article class="glass tier rv">
+          <span class="tag">Starter</span>
+          <div class="tierpix"><div class="pimg p-combo2"></div></div>
+          <div class="qty">2<small>Products</small></div>
+          <div class="price">₹349 <s>₹598</s></div>
+          <p class="body-s" style="font-size:12px">Flat ₹174 per product</p>
+          <ul>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 13 4 4L19 7"/></svg>Pick any two products</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 13 4 4L19 7"/></svg>Free shipping across India</li>
+          </ul>
+          <a class="btn btn-ghost" href="#shop">Build this box</a>
+        </article>
+        <article class="glass tier best rv rv-d2">
+          <span class="tag">Most popular</span>
+          <div class="tierpix"><div class="pimg p-kitchen"></div><div class="pimg p-tap"></div><div class="pimg p-dish"></div></div>
+          <div class="qty">3<small>Products</small></div>
+          <div class="price">₹499 <s>₹897</s></div>
+          <p class="body-s" style="font-size:12px">Flat ₹166 per product</p>
+          <ul>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 13 4 4L19 7"/></svg>Pick any three products</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 13 4 4L19 7"/></svg>Covers kitchen and laundry</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 13 4 4L19 7"/></svg>Free shipping across India</li>
+          </ul>
+          <a class="btn btn-primary" href="#shop">Build this box <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h13m-5-6 6 6-6 6"/></svg></a>
+        </article>
+        <article class="glass tier rv rv-d3">
+          <span class="tag">Whole home</span>
+          <div class="tierpix five"><div class="pimg p-kitchen"></div><div class="pimg p-tap"></div><div class="pimg p-floor"></div><div class="pimg p-toilet"></div><div class="pimg p-laundry"></div></div>
+          <div class="qty">5<small>Products</small></div>
+          <div class="price">₹799 <s>₹1495</s></div>
+          <p class="body-s" style="font-size:12px">Flat ₹160 per product</p>
+          <ul>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 13 4 4L19 7"/></svg>Pick any five products</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 13 4 4L19 7"/></svg>Every room in one order</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 13 4 4L19 7"/></svg>Free shipping across India</li>
+          </ul>
+          <a class="btn btn-ghost" href="#shop">Build this box</a>
+        </article>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Purelane Bundles Grid",
+  "tag": "section",
+  "class": "purelane-bundles-wrapper",
+  "settings": [
+    {
+      "type": "text",
+      "id": "kicker",
+      "label": "Kicker Text",
+      "default": "Build your bundle"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading Text",
+      "default": "One box. Every room."
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Subheading Description",
+      "default": "Mix and match across kitchen, laundry, home and skin. One flat price, no code needed, free shipping either way."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "tier",
+      "name": "Bundle Tier",
+      "settings": [
+        {
+          "type": "product",
+          "id": "bundle_product",
+          "label": "Shopify Product (optional)"
+        },
+        {
+          "type": "text",
+          "id": "tag_text",
+          "label": "Tag Label",
+          "default": "Starter"
+        },
+        {
+          "type": "number",
+          "id": "qty",
+          "label": "Product Quantity",
+          "default": 3
+        },
+        {
+          "type": "text",
+          "id": "price",
+          "label": "Price",
+          "default": "₹499"
+        },
+        {
+          "type": "text",
+          "id": "compare_price",
+          "label": "Compare Price",
+          "default": "₹897"
+        },
+        {
+          "type": "text",
+          "id": "per_product_text",
+          "label": "Unit Price Text",
+          "default": "Flat ₹166 per product"
+        },
+        {
+          "type": "text",
+          "id": "feature1",
+          "label": "Feature Line 1",
+          "default": "Pick any three products"
+        },
+        {
+          "type": "text",
+          "id": "feature2",
+          "label": "Feature Line 2",
+          "default": "Free shipping across India"
+        },
+        {
+          "type": "text",
+          "id": "feature3",
+          "label": "Feature Line 3",
+          "default": "Covers kitchen and laundry"
+        },
+        {
+          "type": "checkbox",
+          "id": "is_best",
+          "label": "Best Tier / Most Popular Highlight",
+          "default": false
+        },
+        {
+          "type": "text",
+          "id": "button_label",
+          "label": "Button Label",
+          "default": "Build this box"
+        },
+        {
+          "type": "url",
+          "id": "button_link",
+          "label": "Button Link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Purelane Bundles Grid",
+      "blocks": [
+        {
+          "type": "tier",
+          "settings": {
+            "tag_text": "Starter",
+            "qty": 2,
+            "price": "₹349",
+            "compare_price": "₹598",
+            "per_product_text": "Flat ₹174 per product",
+            "feature1": "Pick any two products",
+            "feature2": "Free shipping across India",
+            "feature3": "",
+            "is_best": false
+          }
+        },
+        {
+          "type": "tier",
+          "settings": {
+            "tag_text": "Most popular",
+            "qty": 3,
+            "price": "₹499",
+            "compare_price": "₹897",
+            "per_product_text": "Flat ₹166 per product",
+            "feature1": "Pick any three products",
+            "feature2": "Covers kitchen and laundry",
+            "feature3": "Free shipping across India",
+            "is_best": true
+          }
+        },
+        {
+          "type": "tier",
+          "settings": {
+            "tag_text": "Whole home",
+            "qty": 5,
+            "price": "₹799",
+            "compare_price": "₹1495",
+            "per_product_text": "Flat ₹160 per product",
+            "feature1": "Pick any five products",
+            "feature2": "Every room in one order",
+            "feature3": "Free shipping across India",
+            "is_best": false
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
+

@@ -1,0 +1,96 @@
+{% comment %}
+  Purelane Footer Section
+  Renders the 4-column glass footer grid matching purelane-homepage.html.
+{% endcomment %}
+
+<footer data-scene="4">
+  <div class="wrap">
+    <div class="fgrid">
+      <div class="fcol">
+        <a class="brand" href="#top" style="margin-bottom:16px">
+          <span class="mark">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:#b8701c"><path d="M12 21c0-6.5 3.5-11 8-12.5C20 15 16.5 20 12 21Z"/><path d="M12 21C12 14.5 8.5 10 4 8.5 4 15 7.5 20 12 21Z"/><path d="M12 21v-6"/></svg>
+          </span>
+          <span class="txt"><span class="n1">Purelane</span><span class="n2">Clean, simply</span></span>
+        </a>
+        <p style="max-width:30ch">{{ section.settings.about_text | default: 'Effective cleaning, powered by nature.<br>Made for Indian homes since day one.' }}</p>
+      </div>
+
+      <div class="fcol">
+        <h5>Shop</h5>
+        <a href="#shop">Bestsellers</a>
+        <a href="#shop">Kitchen</a>
+        <a href="#shop">Laundry</a>
+        <a href="#shop">Home</a>
+        <a href="#shop">Skin</a>
+        <a href="#bundles">Starter kits</a>
+      </div>
+
+      <div class="fcol">
+        <h5>About</h5>
+        <a href="#how">How it works</a>
+        <a href="#ingredients">Sustainability</a>
+        <a href="#proof">FAQs</a>
+        <a href="#voices">Reviews</a>
+      </div>
+
+      <div class="fcol">
+        <h5>Get in touch</h5>
+        <a href="mailto:{{ section.settings.email | default: 'hello@purelane.com' }}">{{ section.settings.email | default: 'hello@purelane.com' }}</a>
+        <a href="tel:{{ section.settings.phone | default: '+919930123234' }}">{{ section.settings.phone_display | default: '+91 9930 123 234' }}</a>
+        <p style="font-size:12px;color:var(--paper-3) !important">{{ section.settings.company_name | default: 'Purelane Eco Products Pvt Ltd' }}</p>
+      </div>
+    </div>
+
+    <div class="fbot">
+      <span>© 2026 {{ section.settings.copyright_text | default: 'Purelane Eco Products Private Limited' }}</span>
+      <span>Privacy · Terms · Refunds · Contact</span>
+    </div>
+  </div>
+</footer>
+
+{% schema %}
+{
+  "name": "Purelane Footer",
+  "tag": "section",
+  "class": "purelane-footer-wrapper",
+  "settings": [
+    {
+      "type": "textarea",
+      "id": "about_text",
+      "label": "About Description",
+      "default": "Effective cleaning, powered by nature.<br>Made for Indian homes since day one."
+    },
+    {
+      "type": "text",
+      "id": "email",
+      "label": "Contact Email",
+      "default": "hello@purelane.com"
+    },
+    {
+      "type": "text",
+      "id": "phone",
+      "label": "Contact Phone Link",
+      "default": "+919930123234"
+    },
+    {
+      "type": "text",
+      "id": "phone_display",
+      "label": "Contact Phone Display",
+      "default": "+91 9930 123 234"
+    },
+    {
+      "type": "text",
+      "id": "company_name",
+      "label": "Company Legal Name",
+      "default": "Purelane Eco Products Pvt Ltd"
+    },
+    {
+      "type": "text",
+      "id": "copyright_text",
+      "label": "Copyright Text",
+      "default": "Purelane Eco Products Private Limited"
+    }
+  ]
+}
+{% endschema %}

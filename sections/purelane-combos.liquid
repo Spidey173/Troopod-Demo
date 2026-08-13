@@ -1,0 +1,262 @@
+{% comment %}
+  Section 03: Purelane Best-Selling Combos (#combos)
+  Horizontal scroll rail of pre-built bundle combos with stacked item icons, price savings tags, and custom hero styling.
+{% endcomment %}
+
+<section class="sec" id="combos" data-scene="3">
+  <div class="wrap">
+    <div class="panel-head rv">
+      <span class="kicker">{{ section.settings.kicker | default: 'Pre-built to save you money' }}</span>
+      <h2 class="d2" style="margin-top:12px">{{ section.settings.heading | default: 'Best selling combos' }}</h2>
+      <div class="rule">
+        <i></i>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21c0-6.5 3.5-11 8-12.5C20 15 16.5 20 12 21Z"/><path d="M12 21C12 14.5 8.5 10 4 8.5 4 15 7.5 20 12 21Z"/></svg>
+        <i></i>
+      </div>
+      <p class="lede" style="margin:14px auto 0">{{ section.settings.subheading | default: 'Swipe through the boxes people order most. Each one is already priced below buying the same products on their own.' }}</p>
+    </div>
+
+    <div class="comborail rv">
+      {%- for block in section.blocks -%}
+        <article class="glass combo {% if block.settings.is_hero %}hero-combo{% endif %}" {{ block.shopify_attributes }}>
+          <div class="tray">
+            {%- if block.settings.save_text != blank -%}
+              <span class="save">{{ block.settings.save_text }}</span>
+            {%- endif -%}
+            {%- if block.settings.flag_text != blank -%}
+              <span class="flag">{{ block.settings.flag_text }}</span>
+            {%- endif -%}
+            
+            <div class="stack">
+              <span class="it">
+                {%- if block.settings.product_1 != blank and block.settings.product_1.featured_image != blank -%}
+                  <img src="{{ block.settings.product_1.featured_image | image_url: width: 60 }}" alt="{{ block.settings.product_1.title | escape }}" width="30" height="30" style="object-fit:contain; border-radius:4px;" loading="lazy">
+                {%- else -%}
+                  <span class="pimg p-kitchen" role="img" aria-label="Product 1"></span>
+                {%- endif -%}
+                <span>{% if block.settings.product_1 != blank %}{{ block.settings.product_1.title | truncate: 16 }}{% else %}{{ block.settings.item1_note | default: 'Cuts grease' }}{% endif %}</span>
+              </span>
+              <span class="plus" aria-hidden="true">+</span>
+              <span class="it">
+                {%- if block.settings.product_2 != blank and block.settings.product_2.featured_image != blank -%}
+                  <img src="{{ block.settings.product_2.featured_image | image_url: width: 60 }}" alt="{{ block.settings.product_2.title | escape }}" width="30" height="30" style="object-fit:contain; border-radius:4px;" loading="lazy">
+                {%- else -%}
+                  <span class="pimg p-dish" role="img" aria-label="Product 2"></span>
+                {%- endif -%}
+                <span>{% if block.settings.product_2 != blank %}{{ block.settings.product_2.title | truncate: 16 }}{% else %}{{ block.settings.item2_note | default: 'Clean dishes' }}{% endif %}</span>
+              </span>
+              <span class="plus" aria-hidden="true">+</span>
+              <span class="it">
+                {%- if block.settings.product_3 != blank and block.settings.product_3.featured_image != blank -%}
+                  <img src="{{ block.settings.product_3.featured_image | image_url: width: 60 }}" alt="{{ block.settings.product_3.title | escape }}" width="30" height="30" style="object-fit:contain; border-radius:4px;" loading="lazy">
+                {%- else -%}
+                  <span class="pimg p-tap" role="img" aria-label="Product 3"></span>
+                {%- endif -%}
+                <span>{% if block.settings.product_3 != blank %}{{ block.settings.product_3.title | truncate: 16 }}{% else %}{{ block.settings.item3_note | default: 'Melts stains' }}{% endif %}</span>
+              </span>
+            </div>
+          </div>
+
+          <div class="body">
+            <h3>{{ block.settings.title }}</h3>
+            <div class="cnt">{{ block.settings.item_count | default: '3 products' }}</div>
+            <p class="inc">{{ block.settings.description }}</p>
+            <div class="prow">
+              <strong>
+                {%- if block.settings.product_1 != blank and block.settings.product_2 != blank -%}
+                  {%- assign combo_price = block.settings.product_1.price | plus: block.settings.product_2.price -%}
+                  {%- if block.settings.product_3 != blank -%}
+                    {%- assign combo_price = combo_price | plus: block.settings.product_3.price -%}
+                  {%- endif -%}
+                  {{ combo_price | money }}
+                {%- else -%}
+                  {{ block.settings.price }}
+                {%- endif -%}
+              </strong>
+              {%- if block.settings.compare_price != blank -%}
+                <s>{{ block.settings.compare_price }}</s>
+              {%- endif -%}
+              {%- if block.settings.save_pill != blank -%}
+                <em>{{ block.settings.save_pill }}</em>
+              {%- endif -%}
+            </div>
+            <div class="fine">Inclusive of all taxes &middot; COD available</div>
+            <a class="btn {% if block.settings.is_hero %}btn-primary{% else %}btn-ghost{% endif %}" href="{{ block.settings.button_link | default: '#bundles' }}">
+              {{ block.settings.button_label | default: 'Shop bundle' }}
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h13m-5-6 6 6-6 6"/></svg>
+            </a>
+          </div>
+        </article>
+      {%- else -%}
+        <!-- Fallback static combos matching original prototype -->
+        <article class="glass combo">
+          <div class="tray"><span class="save">You save ₹398</span><span class="flag">Most popular</span><div class="stack"><span class="it"><span class="pimg p-kitchen" role="img" aria-label="Purelane kitchen cleaner"></span><span>Cuts grease instantly</span></span><span class="plus" aria-hidden="true">+</span><span class="it"><span class="pimg p-dish" role="img" aria-label="Purelane dishwash gel"></span><span>Squeaky clean dishes</span></span><span class="plus" aria-hidden="true">+</span><span class="it"><span class="pimg p-tap" role="img" aria-label="Purelane tap cleaner"></span><span>Melts hard water stains</span></span></div></div>
+          <div class="body"><h3>Kitchen essentials</h3><div class="cnt">3 products</div><p class="inc">Includes: Foaming Kitchen Cleaner, Dishwash Gel &amp; Tap Cleaner. Everything for a sparkling kitchen, no need to pick separately.</p><div class="prow"><strong>₹499</strong><s>₹897</s><em>Save ₹398</em></div><div class="fine">Inclusive of all taxes &middot; COD available</div><a class="btn btn-ghost" href="#bundles">Shop bundle <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h13m-5-6 6 6-6 6"/></svg></a></div>
+        </article>
+        <article class="glass combo">
+          <div class="tray"><span class="save">You save ₹448</span><div class="stack"><span class="it"><span class="pimg p-laundry" role="img" aria-label="Purelane laundry detergent"></span><span>Removes tough stains &amp; odour</span></span><span class="plus" aria-hidden="true">+</span><span class="it"><span class="tile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21c0-6.5 3.5-11 8-12.5C20 15 16.5 20 12 21Z"/><path d="M12 21C12 14.5 8.5 10 4 8.5 4 15 7.5 20 12 21Z"/></svg></span><span>Softens &amp; freshens every wash</span></span><span class="plus" aria-hidden="true">+</span><span class="it"><span class="pimg p-wm" role="img" aria-label="Purelane machine cleaner"></span><span>Deep-cleans your machine</span></span></div></div>
+          <div class="body"><h3>Laundry care bundle</h3><div class="cnt">3 products</div><p class="inc">Includes: Laundry Detergent, Fabric Conditioner &amp; Machine Cleaner Powder. Softer, fresher wash, all in one box.</p><div class="prow"><strong>₹499</strong><s>₹947</s><em>Save ₹448</em></div><div class="fine">Inclusive of all taxes &middot; COD available</div><a class="btn btn-ghost" href="#bundles">Shop bundle <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h13m-5-6 6 6-6 6"/></svg></a></div>
+        </article>
+        <article class="glass combo hero-combo">
+          <div class="tray"><span class="save">Biggest saving</span><span class="flag">Best value</span><div class="stack"><span class="it"><span class="pimg p-kitchen" role="img" aria-label="Purelane kitchen cleaner"></span><span>Cuts grease instantly</span></span><span class="plus" aria-hidden="true">+</span><span class="it"><span class="pimg p-floor" role="img" aria-label="Purelane floor cleaner"></span><span>Kills 99.9% germs</span></span><span class="plus" aria-hidden="true">+</span><span class="it"><span class="pimg p-handwash" role="img" aria-label="Purelane handwash"></span><span>Gentle hydration for hands</span></span></div></div>
+          <div class="body"><h3>Complete home bundle</h3><div class="cnt">5 products</div><p class="inc">Includes: Kitchen Cleaner, Laundry Detergent, Floor Cleaner, Toilet Cleaner &amp; Handwash. Our biggest saving box.</p><div class="prow"><strong>₹799</strong><s>₹1,495</s><em>Save ₹696</em></div><div class="fine">Inclusive of all taxes &middot; COD available</div><a class="btn btn-primary" href="#bundles">Shop bundle <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h13m-5-6 6 6-6 6"/></svg></a></div>
+        </article>
+        <article class="glass combo">
+          <div class="tray"><span class="save">You save ₹398</span><div class="stack"><span class="it"><span class="pimg p-toilet" role="img" aria-label="Purelane toilet cleaner"></span><span>Kills 99.9% germs</span></span><span class="plus" aria-hidden="true">+</span><span class="it"><span class="pimg p-tap" role="img" aria-label="Purelane tap cleaner"></span><span>Melts hard water stains</span></span><span class="plus" aria-hidden="true">+</span><span class="it"><span class="pimg p-eraser" role="img" aria-label="Purelane magic eraser"></span><span>Scrubs away soap scum</span></span></div></div>
+          <div class="body"><h3>Bathroom deep clean</h3><div class="cnt">3 products</div><p class="inc">Includes: Toilet Cleaner, Tap Cleaner &amp; Magic Eraser. A complete bathroom refresh in one box.</p><div class="prow"><strong>₹499</strong><s>₹897</s><em>Save ₹398</em></div><div class="fine">Inclusive of all taxes &middot; COD available</div><a class="btn btn-ghost" href="#bundles">Shop bundle <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h13m-5-6 6 6-6 6"/></svg></a></div>
+        </article>
+        <article class="glass combo">
+          <div class="tray"><span class="save">You save ₹249</span><div class="stack"><span class="it"><span class="pimg p-tap" role="img" aria-label="Purelane tap cleaner"></span><span>Melts hard water stains</span></span><span class="plus" aria-hidden="true">+</span><span class="it"><span class="pimg p-toilet" role="img" aria-label="Purelane toilet cleaner"></span><span>Fights limescale in the bowl</span></span></div></div>
+          <div class="body"><h3>Hard water solution kit</h3><div class="cnt">2 products</div><p class="inc">Includes: Tap Cleaner &amp; Toilet Cleaner. A quick, focused fix for hard water stains across the home.</p><div class="prow"><strong>₹349</strong><s>₹598</s><em>Save ₹249</em></div><div class="fine">Inclusive of all taxes &middot; COD available</div><a class="btn btn-ghost" href="#bundles">Shop bundle <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h13m-5-6 6 6-6 6"/></svg></a></div>
+        </article>
+      {%- endfor -%}
+    </div>
+
+    <div class="swipecue" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h13m-5-6 6 6-6 6"/></svg>
+      Swipe for more combos
+    </div>
+    <p class="railnote">Tapping "Shop bundle" opens the bundle picker with these products already added. You can still swap anything before you pay.</p>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Purelane Best Combos",
+  "tag": "section",
+  "class": "purelane-combos-wrapper",
+  "settings": [
+    {
+      "type": "text",
+      "id": "kicker",
+      "label": "Kicker Text",
+      "default": "Pre-built to save you money"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading Text",
+      "default": "Best selling combos"
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Subheading Description",
+      "default": "Swipe through the boxes people order most. Each one is already priced below buying the same products on their own."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "combo",
+      "name": "Combo Card",
+      "settings": [
+        {
+          "type": "product",
+          "id": "product_1",
+          "label": "Shopify Product 1"
+        },
+        {
+          "type": "product",
+          "id": "product_2",
+          "label": "Shopify Product 2"
+        },
+        {
+          "type": "product",
+          "id": "product_3",
+          "label": "Shopify Product 3"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Combo Title",
+          "default": "Kitchen essentials"
+        },
+        {
+          "type": "text",
+          "id": "item_count",
+          "label": "Item Count Tag",
+          "default": "3 products"
+        },
+        {
+          "type": "text",
+          "id": "save_text",
+          "label": "Save Badge",
+          "default": "You save ₹398"
+        },
+        {
+          "type": "text",
+          "id": "flag_text",
+          "label": "Flag Tag",
+          "default": "Most popular"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Inclusions Description",
+          "default": "Includes: Foaming Kitchen Cleaner, Dishwash Gel & Tap Cleaner. Everything for a sparkling kitchen."
+        },
+        {
+          "type": "text",
+          "id": "price",
+          "label": "Price",
+          "default": "₹499"
+        },
+        {
+          "type": "text",
+          "id": "compare_price",
+          "label": "Compare Price",
+          "default": "₹897"
+        },
+        {
+          "type": "text",
+          "id": "save_pill",
+          "label": "Save Pill Tag",
+          "default": "Save ₹398"
+        },
+        {
+          "type": "checkbox",
+          "id": "is_hero",
+          "label": "Highlight as Hero Combo (Gold Border & Primary Button)",
+          "default": false
+        },
+        {
+          "type": "text",
+          "id": "button_label",
+          "label": "Button Label",
+          "default": "Shop bundle"
+        },
+        {
+          "type": "url",
+          "id": "button_link",
+          "label": "Button Link"
+        },
+        {
+          "type": "text",
+          "id": "item1_note",
+          "label": "Item 1 Short Note (if no product selected)",
+          "default": "Cuts grease"
+        },
+        {
+          "type": "text",
+          "id": "item2_note",
+          "label": "Item 2 Short Note (if no product selected)",
+          "default": "Clean dishes"
+        },
+        {
+          "type": "text",
+          "id": "item3_note",
+          "label": "Item 3 Short Note (if no product selected)",
+          "default": "Melts stains"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Purelane Best Combos"
+    }
+  ]
+}
+{% endschema %}
+
+
