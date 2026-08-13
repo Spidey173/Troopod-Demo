@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="{{ request.locale.iso_code }}">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% render 'meta-tags' %}
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    {% render 'css-variables' %}
+    {{ 'critical.css' | asset_url | stylesheet_tag: preload: true }}
+
+    {{ content_for_header }}
+
+    {{ 'purelane.css' | asset_url | stylesheet_tag }}
+  </head>
+
+  <body class="purelane-wrapper">
+    {% render 'purelane-water-bg' %}
+
+    {% section 'purelane-ticker' %}
+    {% sections 'header-group' %}
+
+    <!-- Fixed Desktop Progress Rail -->
+    <nav class="rail" aria-label="Section progress">
+      <a href="#top" class="on" aria-label="Hero"></a>
+      <a href="#reviews" aria-label="Reviews"></a>
+      <a href="#ingredients" aria-label="Ingredients"></a>
+      <a href="#how" aria-label="How it works"></a>
+      <a href="#proof" aria-label="Proof"></a>
+      <a href="#bundles" aria-label="Bundles"></a>
+      <a href="#shop" aria-label="Shop"></a>
+    </nav>
+
+    <main id="top" role="main">
+      {{ content_for_layout }}
+    </main>
+
+    {% sections 'footer-group' %}
+
+    <!-- Mobile Sticky Bottom CTA -->
+    <div class="sticky" aria-label="Quick bundle offer">
+      <span class="lbl">
+        <b>Pick any 3, pay ₹499</b>
+        <span>Free shipping, always</span>
+      </span>
+      <a class="btn btn-primary btn-sm" href="#bundles">Build bundle</a>
+    </div>
+
+    <script src="{{ 'purelane.js' | asset_url }}" defer="defer"></script>
+  </body>
+</html>

@@ -1,0 +1,96 @@
+{% comment %}
+  Purelane Reusable Product Card Snippet
+  Renders a single product card with fallback preview support, stock status badges, rating star display, compare-at price discount tags, and quick add-to-cart AJAX triggers.
+
+  Accepts:
+  - card_product: {Object} Shopify Product object
+  - badge_label: {String} Optional custom badge text (e.g. "Best seller", "Top rated")
+  - rating_val: {String} Optional star rating (defaults to 4.8)
+  - review_cnt: {String} Optional review count (defaults to 237)
+  - fallback_title: {String} Fallback title if product is blank
+  - fallback_pimg: {String} CSS image class (e.g. "p-tap", "p-kitchen", "p-metal", "p-wm")
+  - fallback_svg: {String} Custom SVG markup fallback
+  - custom_class: {String} Extra classes (e.g. "rv-d1", "rv-d2")
+{% endcomment %}
+
+{%- assign prod = card_product -%}
+{%- assign is_available = true -%}
+{%- if prod != blank and prod.available == false -%}
+  {%- assign is_available = false -%}
+{%- endif -%}
+
+<article class="glass card rv {{ custom_class }}">
+  <div class="shot">
+    {%- if is_available == false -%}
+      <span class="pill" style="background: rgba(220,50,50,0.15); border-color: rgba(220,50,50,0.3); color: #c02020;">Sold Out</span>
+    {%- elsif badge_label != blank -%}
+      <span class="pill">{{ badge_label }}</span>
+    {%- elsif prod != blank and prod.metafields.purelane.badge_label != blank -%}
+      <span class="pill">{{ prod.metafields.purelane.badge_label }}</span>
+    {%- elsif prod != blank and prod.compare_at_price > prod.price -%}
+      <span class="pill">Best seller</span>
+    {%- else -%}
+      <span class="pill">Best seller</span>
+    {%- endif -%}
+
+    {%- if prod != blank and prod.featured_image != blank -%}
+      <img
+        src="{{ prod.featured_image | image_url: width: 300 }}"
+        alt="{{ prod.featured_image.alt | default: prod.title | escape }}"
+        loading="lazy"
+        width="150"
+        height="150"
+      >
+    {%- elsif fallback_svg != blank -%}
+      {{ fallback_svg }}
+    {%- elsif fallback_pimg != blank -%}
+      <span class="pimg {{ fallback_pimg }}" role="img" aria-label="{{ fallback_title | default: 'Purelane product' | escape }}"></span>
+    {%- elsif prod != blank and prod.featured_image == blank -%}
+      {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+    {%- else -%}
+      <span class="pimg p-tap" role="img" aria-label="Purelane tap cleaner"></span>
+    {%- endif -%}
+  </div>
+
+  <h4>
+    {%- if prod != blank -%}
+      {{ prod.title }}
+    {%- else -%}
+      {{ fallback_title | default: "Tap cleaner & limescale remover" }}
+    {%- endif -%}
+  </h4>
+
+  <div class="rate">
+    {%- assign star_rating = prod.metafields.purelane.rating | default: rating_val | default: "4.8" -%}
+    {%- assign rev_count = prod.metafields.purelane.review_count | default: review_cnt | default: "237" -%}
+    <b>★ {{ star_rating }}</b> · {{ rev_count }} reviews
+  </div>
+
+  <div class="pr">
+    {%- if prod != blank -%}
+      <strong>{{ prod.price | money }}</strong>
+      {%- if prod.compare_at_price > prod.price -%}
+        <s>{{ prod.compare_at_price | money }}</s>
+        {%- assign savings_pct = prod.compare_at_price | minus: prod.price | times: 100 | divided_by: prod.compare_at_price -%}
+        <em>{{ savings_pct }}% off</em>
+      {%- endif -%}
+    {%- else -%}
+      <strong>₹200</strong><s>₹299</s><em>33% off</em>
+    {%- endif -%}
+  </div>
+
+  {%- if is_available -%}
+    <button
+      type="button"
+      class="btn btn-ghost btn-sm purelane-add-to-cart"
+      {% if prod != blank %}data-variant-id="{{ prod.selected_or_first_available_variant.id }}"{% endif %}
+    >
+      Add to cart
+    </button>
+  {%- else -%}
+    <button type="button" class="btn btn-ghost btn-sm" disabled style="opacity: 0.5; cursor: not-allowed;">
+      Out of Stock
+    </button>
+  {%- endif -%}
+</article>
+
