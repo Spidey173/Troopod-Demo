@@ -4834,3 +4834,390 @@ html body .rail a.on {
     transform: translate(50%, 0);
   }
 }
+
+@media (max-width: 768px) {
+  body {
+    zoom: 100% !important;
+  }
+}
+
+/* ==========================================================================
+   PURELANE GLASSMORPHIC CART DRAWER & OVERLAY (MOBILE & DESKTOP)
+   ========================================================================== */
+
+/* ---------- CART BACKDROP OVERLAY ---------- */
+.cart-overlay {
+  position: fixed !important;
+  inset: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  background: rgba(8, 4, 18, 0.72) !important;
+  backdrop-filter: blur(8px) !important;
+  -webkit-backdrop-filter: blur(8px) !important;
+  z-index: 999990 !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+  transition: opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.35s !important;
+}
+
+.cart-overlay.is-open {
+  opacity: 1 !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+}
+
+/* ---------- CART DRAWER SLIDE-OVER CONTAINER ---------- */
+aside.cart-drawer,
+.cart-drawer {
+  position: fixed !important;
+  top: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  width: 100% !important;
+  max-width: 440px !important;
+  height: 100vh !important;
+  height: 100dvh !important;
+  background: linear-gradient(165deg, rgba(24, 18, 42, 0.98), rgba(12, 8, 24, 0.99)) !important;
+  backdrop-filter: blur(28px) saturate(160%) !important;
+  -webkit-backdrop-filter: blur(28px) saturate(160%) !important;
+  border-left: 1.5px solid rgba(236, 230, 247, 0.16) !important;
+  border-top: none !important;
+  border-right: none !important;
+  border-bottom: none !important;
+  border-radius: 24px 0 0 24px !important;
+  box-shadow: -20px 0 60px rgba(0, 0, 0, 0.65), inset 1px 0 0 rgba(255, 255, 255, 0.12) !important;
+  z-index: 999999 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  transform: translateX(105%) !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+  transition: transform 0.38s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.38s !important;
+  overflow: hidden !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.cart-drawer.is-open {
+  transform: translateX(0) !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+}
+
+/* ---------- DRAWER HEADER ---------- */
+.cd-head {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  padding: 20px 24px !important;
+  border-bottom: 1px solid rgba(236, 230, 247, 0.12) !important;
+  background: rgba(255, 255, 255, 0.03) !important;
+  flex-shrink: 0 !important;
+}
+
+.cd-title {
+  display: flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+  color: #fff !important;
+}
+
+.cd-title svg {
+  stroke: var(--accent, #f0a03c) !important;
+  width: 22px !important;
+  height: 22px !important;
+  flex-shrink: 0 !important;
+}
+
+.cd-title h3 {
+  font-family: 'Outfit', sans-serif !important;
+  font-size: 19px !important;
+  font-weight: 700 !important;
+  color: #fff !important;
+  margin: 0 !important;
+  line-height: 1.2 !important;
+}
+
+.cd-count {
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  background: rgba(240, 160, 60, 0.18) !important;
+  color: var(--accent, #f0a03c) !important;
+  border: 1px solid rgba(240, 160, 60, 0.35) !important;
+  padding: 3px 9px !important;
+  border-radius: 999px !important;
+  white-space: nowrap !important;
+}
+
+.cd-close {
+  display: grid !important;
+  place-items: center !important;
+  width: 36px !important;
+  height: 36px !important;
+  border-radius: 50% !important;
+  background: rgba(255, 255, 255, 0.08) !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  color: #fff !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
+  padding: 0 !important;
+}
+
+.cd-close:hover {
+  background: rgba(255, 255, 255, 0.2) !important;
+  transform: scale(1.06) !important;
+}
+
+/* ---------- DRAWER BODY ---------- */
+.cd-body {
+  flex: 1 1 auto !important;
+  overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch !important;
+  padding: 20px 24px !important;
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+/* ---------- DRAWER EMPTY STATE ---------- */
+.cd-empty {
+  margin: auto !important;
+  text-align: center !important;
+  padding: 36px 16px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  color: #fff !important;
+}
+
+.cd-empty svg {
+  stroke: var(--accent, #f0a03c) !important;
+  opacity: 0.6 !important;
+  margin-bottom: 14px !important;
+}
+
+.cd-empty h4 {
+  font-family: 'Outfit', sans-serif !important;
+  font-size: 18px !important;
+  font-weight: 700 !important;
+  color: #fff !important;
+  margin: 0 0 8px !important;
+}
+
+.cd-empty p {
+  font-size: 13.5px !important;
+  color: rgba(236, 230, 247, 0.72) !important;
+  line-height: 1.5 !important;
+  margin: 0 0 16px !important;
+  max-width: 280px !important;
+}
+
+/* ---------- DRAWER ITEMS LIST ---------- */
+.cd-items {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 14px !important;
+}
+
+.cd-item {
+  display: flex !important;
+  gap: 14px !important;
+  padding: 14px !important;
+  border-radius: 16px !important;
+  background: rgba(255, 255, 255, 0.05) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  align-items: center !important;
+  transition: background 0.2s ease !important;
+}
+
+.cd-item:hover {
+  background: rgba(255, 255, 255, 0.08) !important;
+}
+
+.cd-thumb {
+  width: 64px !important;
+  height: 64px !important;
+  min-width: 64px !important;
+  border-radius: 12px !important;
+  overflow: hidden !important;
+  background: rgba(0, 0, 0, 0.25) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+.cd-thumb img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+}
+
+.cd-info {
+  flex: 1 !important;
+  min-width: 0 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 4px !important;
+}
+
+.cd-info h4 {
+  font-family: 'Outfit', sans-serif !important;
+  font-size: 14.5px !important;
+  font-weight: 700 !important;
+  color: #fff !important;
+  margin: 0 !important;
+  line-height: 1.3 !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+.cd-var {
+  font-size: 12px !important;
+  color: rgba(236, 230, 247, 0.65) !important;
+}
+
+.cd-pr {
+  font-family: 'Outfit', sans-serif !important;
+  font-size: 14px !important;
+  font-weight: 800 !important;
+  color: var(--accent, #f0a03c) !important;
+}
+
+.cd-qty-wrap {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  margin-top: 4px !important;
+}
+
+.cd-qty-btn {
+  width: 26px !important;
+  height: 26px !important;
+  border-radius: 50% !important;
+  background: rgba(255, 255, 255, 0.12) !important;
+  border: 1px solid rgba(255, 255, 255, 0.18) !important;
+  color: #fff !important;
+  font-size: 15px !important;
+  font-weight: 700 !important;
+  cursor: pointer !important;
+  display: grid !important;
+  place-items: center !important;
+  line-height: 1 !important;
+  transition: all 0.15s ease !important;
+  padding: 0 !important;
+}
+
+.cd-qty-btn:hover {
+  background: var(--accent, #f0a03c) !important;
+  color: #161026 !important;
+  border-color: var(--accent, #f0a03c) !important;
+}
+
+.cd-qty-val {
+  font-family: 'Outfit', sans-serif !important;
+  font-size: 13.5px !important;
+  font-weight: 700 !important;
+  color: #fff !important;
+  min-width: 18px !important;
+  text-align: center !important;
+}
+
+.cd-remove {
+  margin-left: auto !important;
+  background: transparent !important;
+  border: none !important;
+  color: rgba(236, 230, 247, 0.5) !important;
+  cursor: pointer !important;
+  display: grid !important;
+  place-items: center !important;
+  padding: 4px !important;
+  border-radius: 6px !important;
+  transition: all 0.15s ease !important;
+}
+
+.cd-remove:hover {
+  color: #ff5f56 !important;
+  background: rgba(255, 95, 86, 0.12) !important;
+}
+
+/* ---------- DRAWER FOOTER ---------- */
+.cd-foot {
+  padding: 20px 24px 28px !important;
+  border-top: 1px solid rgba(236, 230, 247, 0.12) !important;
+  background: rgba(16, 11, 28, 0.98) !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 12px !important;
+  flex-shrink: 0 !important;
+}
+
+.cd-subtotal {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  font-size: 15px !important;
+  color: rgba(236, 230, 247, 0.85) !important;
+}
+
+.cd-subtotal strong {
+  font-family: 'Outfit', sans-serif !important;
+  font-size: 18px !important;
+  font-weight: 800 !important;
+  color: #fff !important;
+}
+
+.cd-note {
+  font-size: 11.5px !important;
+  color: rgba(236, 230, 247, 0.55) !important;
+  text-align: center !important;
+  margin: 0 !important;
+}
+
+.cd-foot .btn-block {
+  width: 100% !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  padding: 14px 20px !important;
+  font-size: 14.5px !important;
+  font-weight: 800 !important;
+  border-radius: 999px !important;
+}
+
+.cd-view-cart {
+  text-align: center !important;
+  font-size: 12.5px !important;
+  color: var(--accent, #f0a03c) !important;
+  text-decoration: underline !important;
+  text-underline-offset: 3px !important;
+  opacity: 0.85 !important;
+  transition: opacity 0.2s ease !important;
+}
+
+.cd-view-cart:hover {
+  opacity: 1 !important;
+}
+
+/* ---------- MOBILE RESPONSIVE DRAWER OVERRIDES ---------- */
+@media(max-width: 600px) {
+  aside.cart-drawer,
+  .cart-drawer {
+    max-width: 100% !important;
+    width: 100% !important;
+    border-radius: 0 !important;
+    border-left: none !important;
+  }
+
+  .cd-head {
+    padding: 16px 18px !important;
+  }
+
+  .cd-body {
+    padding: 16px 18px !important;
+  }
+
+  .cd-foot {
+    padding: 16px 18px max(24px, env(safe-area-inset-bottom)) !important;
+  }
+}
